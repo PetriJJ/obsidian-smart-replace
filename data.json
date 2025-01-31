@@ -1,0 +1,5 @@
+{
+  "replaceRulesPath": "Automation/replaceRules.md",
+  "enableSmartQuotes": true,
+  "enableRemoveEmptyLines": true
+}

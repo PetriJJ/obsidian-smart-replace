@@ -1,0 +1,10 @@
+{
+    "id": "smart-replace",
+    "name": "Smart Replace",
+    "version": "1.0.0",
+    "minAppVersion": "0.12.0",
+    "description": "Smart Replace: Replace text using rules, remove empty lines, and convert smart quotes.",
+    "author": "Your Name",
+    "authorUrl": "",
+    "isDesktopOnly": false
+}
