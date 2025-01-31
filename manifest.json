@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "minAppVersion": "0.12.0",
     "description": "Smart Replace: Replace text using rules, remove empty lines, and convert smart quotes.",
-    "author": "Your Name",
+    "author": "Petri",
     "authorUrl": "",
     "isDesktopOnly": false
 }
