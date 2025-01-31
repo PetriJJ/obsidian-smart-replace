@@ -4,7 +4,7 @@ const fs = require("fs");
 module.exports = class SmartReplacePlugin extends Plugin {
     async onload() {
         await this.loadSettings();
-        
+
         this.addCommand({
             id: "smart-replace",
             name: "Smart Replace, Remove empty lines & Smart quotes",
@@ -35,17 +35,17 @@ module.exports = class SmartReplacePlugin extends Plugin {
 
     async processText(editor) {
         let text = editor.getValue();
-        
+
         if (this.settings.enableSmartQuotes) {
             text = this.convertSmartQuotes(text);
         }
-        
+
         text = await this.applyReplacements(text);
-        
+
         if (this.settings.enableRemoveEmptyLines) {
             text = text.replace(/^\s*\n/gm, "");
         }
-        
+
         editor.setValue(text);
     }
 
@@ -57,36 +57,36 @@ module.exports = class SmartReplacePlugin extends Plugin {
 
     async applyReplacements(text) {
         if (!this.settings.replaceRulesPath) {
-            new Notice("Replacement rules file path is not set.");
+            new Notice("Smart Replace: No replacement rules file set.");
             return text;
         }
-        
+
         const rulesFile = this.app.vault.getAbstractFileByPath(this.settings.replaceRulesPath);
-        
+
         if (!rulesFile) {
-            new Notice("Replacement rules file not found: " + this.settings.replaceRulesPath);
+            new Notice(`Smart Replace: File not found - ${this.settings.replaceRulesPath}`);
             return text;
         }
-        
+
         try {
             const content = await this.app.vault.read(rulesFile);
             const rules = content.split("\n");
-            
+
             rules.forEach(line => {
                 line = line.trim();
                 if (!line || line.startsWith(";") || line.startsWith("==")) return;
-                
+
                 const match = line.match(/^"(.*?)",\s*"(.*?)"$/);
                 if (match) {
-                    let search = match[1];
-                    let replace = match[2].replace(/\\n/g, "\n");
-                    text = text.replace(new RegExp(search, "gm"), replace);
+                    const search = new RegExp(match[1], "gm");
+                    const replace = match[2].replace(/\\n/g, "\n");
+                    text = text.replace(search, replace);
                 }
             });
         } catch (error) {
-            new Notice("Error reading replacement rules file: " + error.message);
+            new Notice("Smart Replace: Error reading rules file.");
         }
-        
+
         return text;
     }
 };
